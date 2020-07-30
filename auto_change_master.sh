@@ -2,7 +2,6 @@
 # Automatically perform change master if the current master fails
 # nohup ./auto_change_master.sh 192.168.10.101,192.168.10.102,192.168.10.103 &
 #
-# Written by: Ashraf Sharif
 
 ## Database user ##
 # The database user to perform healthcheck and change master. It must have SUPER privileges.
@@ -138,7 +137,7 @@ while true; do
 			logging "Creating flag file to indicate replication is OK."
 			[ -e $FLAGFILE ] || touch $FLAGFILE
 		fi
-			
+
 	else
 		logging "Replication is NOT healthy. Removing flag file $FLAGFILE to trigger failover."
 		rm -f $FLAGFILE
@@ -194,4 +193,3 @@ while true; do
  	fi
 	sleep $INTERVAL
 done
-
