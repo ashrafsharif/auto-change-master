@@ -72,6 +72,19 @@ The script should be running on the slave node. In the following example archite
 
 In this example, `DB 6` (slave) should be replicating from `DB 3` (master). In case if `DB 3` (master) goes down or unreachable, the script will perform failover to `DB 1` or `DB 2`, depending on the availability, and the next in the list.
 
+## Create database user
+
+For performance matters, this script requires two database users with SUPER privileges (so it can perform replication health check and run `CHANGE MASTER` statement) - One for localhost via socket and one for TCP/IP connection. Therefore, create two user-host as below:
+
+```
+MariaDB> CREATE USER 'replication_checker'@'localhost' IDENTIFIED BY 'checkerpassword';
+MariaDB> GRANT SUPER ON *.* TO 'replication_checker'@'localhost';
+MariaDB> CREATE USER 'replication_checker'@'192.168.10.%' IDENTIFIED BY 'checkerpassword';
+MariaDB> GRANT SUPER ON *.* TO 'replication_checker'@'192.168.10.%';
+```
+
+** We created two users with same username but different hosts (localhost = socket while 192.168.10.% = pattern matching for all IP under 192.168.10.0/24 network).
+
 ## Running as script
 
 To run the script in the foreground, do:
