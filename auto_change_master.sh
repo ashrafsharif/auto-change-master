@@ -1,7 +1,6 @@
 #!/bin/bash
 # Automatically perform change master if the current master fails
 # nohup ./auto_change_master.sh 192.168.10.101,192.168.10.102,192.168.10.103 &
-#
 
 ## Database user ##
 # The database user to perform healthcheck and change master. It must have SUPER privileges.
@@ -128,7 +127,7 @@ logging "  CHECK_INTERVAL           = every $INTERVAL seconds"
 logging "  RETRY_IF_FAIL_INTERVAL   = every $FAIL_INTERVAL seconds"
 while true; do
 	YES=$(${LOCAL_MYSQL_COMMAND} 'SHOW SLAVE STATUS\G' | grep -E 'Slave_.*_Running:' | awk {'print $2'} | grep 'Yes' | wc -l)
-	echo "YES: $YES"
+	#echo "YES: $YES"
 
 	if [ $YES -eq 2 ]; then
 		# Replication is OK
