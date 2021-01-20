@@ -138,8 +138,12 @@ while true; do
 		fi
 
 	else
-		logging "Replication is NOT healthy. Removing flag file $FLAGFILE to trigger failover."
-		rm -f $FLAGFILE
+		if /sbin/pidof mysqld > /dev/null; then
+			logging "Replication is NOT healthy. Removing flag file $FLAGFILE to trigger failover."
+			rm -f $FLAGFILE
+		else
+			logging "mysqld is not running. Will check again in $INTERVAL seconds."
+		fi
 	fi
 
 
